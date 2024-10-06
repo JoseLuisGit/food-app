@@ -1,8 +1,10 @@
 <?php
 
-use App\Models\Product;
+use App\Http\Controllers\ProductController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -34,23 +36,23 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::resource('products', ProductController::class);
+    Route::get('/file-image', function (Request $request) {
+        $name = $request->get('name') ?? 'not-exist';
+        $path = storage_path('app/images/' . $name);
+        if (!File::exists($path)) {
+            $path = public_path('images/not-found.jpg');
+        }
+
+        $file = File::get($path);
+        $type = File::mimeType($path);
+
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $type);
+
+        return $response;
+    })->name('file-image');
 });
 
 
-Route::get('{slug}', function () {
-    return Inertia::render('Product');
-})->name('products.show');
-
-
-Route::post('products/create', function (Request $request) {
-    $validated = $request->validate([
-        'name' => 'required',
-        'slug' => 'required',
-    ]);
-
-    $product_slug = $validated['slug'];
-
-    Product::create($validated);
-
-    return redirect()->route('products.show', [$product_slug]);
-})->name('products.create');

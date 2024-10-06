@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id('product_id');
+        Schema::create('extras', function (Blueprint $table) {
+            $table->id('extra_id');
             $table->string('name', 50);
-            $table->string('description')->nullable();
             $table->float('price')->default(0);
             $table->string('image')->nullable();
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
             $table->timestamps();
         });
     }

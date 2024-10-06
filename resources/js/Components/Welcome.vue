@@ -1,4 +1,6 @@
-<script setup></script>
+<script setup>
+
+</script>
 
 <template>
     <div>
@@ -11,7 +13,6 @@
                 Puede seleccionar el producto...
             </p>
         </div>
-
         <div
             class="p-10 bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
         >

@@ -1,21 +1,11 @@
 <script setup>
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
 
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
 });
 
-const form = useForm("createProduct", {
-    name: null,
-    slug: null,
-});
-
-const submit = () => {
-    form.post(route("products.create"), {
-        onSuccess: () => form.reset(),
-    });
-};
 </script>
 
 <template>
@@ -33,7 +23,7 @@ const submit = () => {
                 :href="route('dashboard')"
                 class="text-sm text-gray-700 underline"
             >
-                Dashboard
+                Home
             </Link>
 
             <template v-else>
@@ -41,7 +31,7 @@ const submit = () => {
                     :href="route('login')"
                     class="text-lg text-gray-700 underline"
                 >
-                    Log in
+                    Ingresar
                 </Link>
 
                 <Link
@@ -49,21 +39,11 @@ const submit = () => {
                     :href="route('register')"
                     class="ml-4 text-lg text-gray-700 underline"
                 >
-                    Register
+                    Registrarse
                 </Link>
             </template>
         </div>
 
-        <!--
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <form @submit.prevent="submit">
-                    <input type="text" id="name" name="name" v-model="form.name" />
-                    <input type="text" id="slug" name="slug" v-model="form.slug" />
-                    <button type="submit">Submit</button>
-                </form>
-            </div>
-        
-        -->
         <div class="font-sans text-gray-900 antialiased">
             <div class="pt-4 bg-gray-100">
                 <div
@@ -93,12 +73,13 @@ const submit = () => {
                             <h1
                                 class="m-0 pl-2 text-4xl font-bold text-gray-800"
                             >
-                                Welcome to Food App!
+                                Bienvenido a Food App!
                             </h1>
                         </div>
 
                         <p>
-                            This is a simple starter kit for a Laravel app that
+                            Esta es una aplicacion para ver los productos de la
+                            tienda
                         </p>
                     </div>
                 </div>
