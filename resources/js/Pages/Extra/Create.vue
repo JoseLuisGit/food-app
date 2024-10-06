@@ -3,31 +3,29 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import TextArea from "@/Components/TextArea.vue";
 import { useForm } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Dropdown from "../../Components/Dropdown.vue";
 
 const form = useForm({
     name: "",
-    description: "",
     price: "",
     type: "",
     image: null,
 });
 
 const submit = () => {
-    form.post(route("products.store"));
+    form.post(route("extras.store"));
 };
 
 const types = ["Pizza", "Pastel"];
 </script>
 
 <template>
-    <AppLayout title="Crear Producto">
+    <AppLayout title="Crear Extra">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Crear Producto
+                Crear Extra
             </h2>
         </template>
 
@@ -58,25 +56,6 @@ const types = ["Pizza", "Pastel"];
                                         <InputError
                                             class="mt-2"
                                             :message="form.errors.name"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <InputLabel
-                                            for="description"
-                                            value="Descripcion"
-                                        />
-
-                                        <TextArea
-                                            id="description"
-                                            type="text"
-                                            class="mt-1 block w-full"
-                                            v-model="form.description"
-                                        />
-
-                                        <InputError
-                                            class="mt-2"
-                                            :message="form.errors.description"
                                         />
                                     </div>
 

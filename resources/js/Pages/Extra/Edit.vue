@@ -9,29 +9,27 @@ import { useForm } from "@inertiajs/vue3";
 import Dropdown from "../../Components/Dropdown.vue";
 
 const props = defineProps({
-    product: Object,
+    extra: Object,
 });
 
 const form = useForm({
     _method: "put",
-    id: props.product.product_id,
-    name: props.product.name,
-    description: props.product.description,
-    price: props.product.price,
-    image: props.product.image,
-    type: props.product.type,
+    id: props.extra.extra_id,
+    name: props.extra.name,
+    price: props.extra.price,
+    image: props.extra.image,
+    type: props.extra.type,
 });
 const types = ["Pizza", "Pastel"];
 const submit = () => {
     const formData = new FormData();
     formData.append("id", form.id);
     formData.append("name", form.name);
-    formData.append("description", form.description);
     formData.append("price", form.price);
     formData.append("image", form.image);
     formData.append("type", form.type);
 
-    form.post(route("products.update", props.product.product_id), {
+    form.post(route("extras.update", props.extra.extra_id), {
         forceFormData: true,
         body: formData,
     });
@@ -47,10 +45,10 @@ const handleFileChange = (event) => {
 </script>
 
 <template>
-    <AppLayout title="Editar Producto">
+    <AppLayout title="Editar Extra">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Editar Producto
+                Editar Extra
             </h2>
         </template>
 
@@ -73,22 +71,6 @@ const handleFileChange = (event) => {
                             <InputError
                                 class="mt-2"
                                 :message="form.errors.name"
-                            />
-                        </div>
-
-                        <div>
-                            <InputLabel for="description" value="Description" />
-
-                            <TextArea
-                                id="description"
-                                type="text"
-                                class="mt-1 block w-full"
-                                v-model="form.description"
-                            />
-
-                            <InputError
-                                class="mt-2"
-                                :message="form.errors.description"
                             />
                         </div>
 

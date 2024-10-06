@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ExtraController;
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -34,10 +36,13 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return Inertia::render('Dashboard', [
+            'products' => Product::all()
+        ]);
     })->name('dashboard');
 
     Route::resource('products', ProductController::class);
+    Route::resource('extras', ExtraController::class);
     Route::get('/file-image', function (Request $request) {
         $name = $request->get('name') ?? 'not-exist';
         $path = storage_path('app/images/' . $name);
@@ -53,6 +58,7 @@ Route::middleware([
 
         return $response;
     })->name('file-image');
+    Route::get('/extras-type', [ExtraController::class, 'getByType'])->name('extras.type');
 });
 
 

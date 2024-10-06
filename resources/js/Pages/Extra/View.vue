@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 const props = defineProps({
-    product: Object,
+    extra: Object,
 });
 const getImageUrl = (image) => {
     return route("file-image", { name: image });
@@ -22,20 +22,17 @@ const getImageUrl = (image) => {
                         <div
                             class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6"
                         >
-                            <h1 class="text-2xl">{{ props.product.name }}</h1>
-                            <div>
-                                {{ props.product.description }}
-                            </div>
-                            <div>{{ props.product.price }} Bs.</div>
+                            <h1 class="text-2xl">{{ props.extra.name }}</h1>
+                            <div>{{ props.extra.price }} Bs.</div>
                             <div class="text-2xl text-gray-500">
-                                Tipo: {{ props.product.type }}
+                                Tipo: {{ props.extra.type }}
                             </div>
                             <div>
                                 <img
-                                    :src="getImageUrl(props.product.image)"
+                                    :src="getImageUrl(props.extra.image)"
                                     height="500"
                                     width="500"
-                                    :alt="props.product.name"
+                                    :alt="props.extra.name"
                                 />
                             </div>
                         </div>

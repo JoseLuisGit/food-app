@@ -6,7 +6,7 @@ import Pagination from "@/Components/Pagination.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 
 const props = defineProps({
-    products: Object,
+    extras: Object,
     filters: Object,
     message: String,
 });
@@ -18,7 +18,7 @@ const form = useForm(filters);
 
 const deleteTrade = (id) => {
     if (confirm("Are you sure you want to move this to trash")) {
-        form.delete(route("products.destroy", { id: id }), {
+        form.delete(route("extras.destroy", { id: id }), {
             preserveScroll: true,
         });
     }
@@ -30,13 +30,13 @@ const getImageUrl = (image) => {
 </script>
 
 <template>
-    <AppLayout title="Productos">
+    <AppLayout title="Extras">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800">
-                <a :href="route('products.index')">Productos</a>
+                <a :href="route('extras.index')">Extras</a>
             </h2>
-            <PrimaryLink :href="route('products.create')" class="max-w-xl ml-2"
-                >Crear Producto</PrimaryLink
+            <PrimaryLink :href="route('extras.create')" class="max-w-xl ml-2"
+                >Crear Extra</PrimaryLink
             >
         </template>
         <div class="py-12">
@@ -56,25 +56,23 @@ const getImageUrl = (image) => {
                             <tr class="text-left font-bold">
                                 <th class="pb-4 pt-6 px-6">ID</th>
                                 <th class="pb-4 pt-6 px-6">Nombre</th>
-                                <th class="pb-4 pt-6 px-6">Descripción</th>
                                 <th class="pb-4 pt-6 px-6">Precio (Bs)</th>
                                 <th class="pb-4 pt-6 px-6">Tipo</th>
                                 <th class="pb-4 pt-6 px-6">Image</th>
-                                <th class="pb-4 pt-6 px-6">Extras</th>
                                 <th class="pb-4 pt-6 px-6">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr
-                                v-for="entry in props.products.data"
-                                :key="entry.product_id"
+                                v-for="entry in props.extras.data"
+                                :key="entry.extra_id"
                                 class="hover:bg-gray-100 focus-within:bg-gray-100"
                             >
                                 <td class="border-t">
                                     <span
                                         class="flex items-center px-6 py-4 focus:text-indigo-500"
                                     >
-                                        {{ entry.product_id }}
+                                        {{ entry.extra_id }}
                                     </span>
                                 </td>
                                 <td class="border-t">
@@ -82,13 +80,6 @@ const getImageUrl = (image) => {
                                         class="flex items-center px-6 py-4 focus:text-indigo-500"
                                     >
                                         {{ entry.name }}
-                                    </span>
-                                </td>
-                                <td class="border-t">
-                                    <span
-                                        class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    >
-                                        {{ entry.description }}
                                     </span>
                                 </td>
                                 <td class="border-t">
@@ -120,19 +111,8 @@ const getImageUrl = (image) => {
                                 <td class="border-t">
                                     <PrimaryLink
                                         :href="
-                                            route('extras.index', {
-                                                type: entry.type,
-                                            })
-                                        "
-                                        class="max-w-xl ml-2"
-                                        >Extras</PrimaryLink
-                                    >
-                                </td>
-                                <td class="border-t">
-                                    <PrimaryLink
-                                        :href="
-                                            route('products.show', {
-                                                id: entry.product_id,
+                                            route('extras.show', {
+                                                id: entry.extra_id,
                                             })
                                         "
                                         class="max-w-xl ml-2"
@@ -140,8 +120,8 @@ const getImageUrl = (image) => {
                                     >
                                     <PrimaryLink
                                         :href="
-                                            route('products.edit', {
-                                                id: entry.product_id,
+                                            route('extras.edit', {
+                                                id: entry.extra_id,
                                             })
                                         "
                                         class="max-w-xl ml-2"
@@ -149,13 +129,13 @@ const getImageUrl = (image) => {
                                     >
                                     <DangerButton
                                         class="ml-3"
-                                        @click="deleteTrade(entry.product_id)"
+                                        @click="deleteTrade(entry.extra_id)"
                                     >
                                         Eliminar
                                     </DangerButton>
                                 </td>
                             </tr>
-                            <tr v-if="props.products.data.length === 0">
+                            <tr v-if="props.extras.data.length === 0">
                                 <td class="px-6 py-4 border-t" colspan="4">
                                     No hay datos.
                                 </td>
@@ -163,7 +143,7 @@ const getImageUrl = (image) => {
                         </tbody>
                     </table>
                 </div>
-                <pagination class="mt-6" :links="props.products.links" />
+                <pagination class="mt-6" :links="props.extras.links" />
             </div>
         </div>
     </AppLayout>

@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\Extra;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
-class ProductController extends Controller
+class ExtraController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $products = Product::query()
+        $extras = Extra::query()
             ->orderBy('created_at', 'DESC')
+            ->where('type', $request->type)
             ->paginate(8)
             ->withQueryString();
 
-        return Inertia::render('Product/Index', [
-            'products' => $products,
+        return Inertia::render('Extra/Index', [
+            'extras' => $extras,
             'filters' => $request->all('filter'),
             'message' => session('message'),
         ]);
@@ -33,7 +33,7 @@ class ProductController extends Controller
     public function create()
     {
         return Inertia::render(
-            'Product/Create'
+            'Extra/Create'
         );
     }
 
@@ -45,7 +45,6 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:50',
             'type' => 'required|string',
-            'description' => 'string|max:255',
             'price' => 'integer|min:0',
             'image' => 'nullable|sometimes|image|mimes:jpeg,png,jpg'
         ]);
@@ -57,20 +56,20 @@ class ProductController extends Controller
             $request->file('image')->storeAs('images', $imageName);
             $data['image'] = $imageName;
         }
-        Product::create($data);
+        Extra::create($data);
 
-        return redirect()->route('products.index')->with('message', 'Product Created Successfully');
+        return redirect()->route('extras.index', ['type' => $data['type']])->with('message', 'extra Created Successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Extra $extra)
     {
         return Inertia::render(
-            'Product/View',
+            'Extra/View',
             [
-                'product' => $product
+                'extra' => $extra
             ]
         );
     }
@@ -78,12 +77,12 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Extra $extra)
     {
         return Inertia::render(
-            'Product/Edit',
+            'Extra/Edit',
             [
-                'product' => $product
+                'extra' => $extra
             ]
         );
     }
@@ -91,43 +90,52 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Extra $extra)
     {
         $request->validate([
             'name' => 'required|string|max:50',
             'type' => 'required|string',
-            'description' => 'string|max:255',
             'price' => 'integer|min:0'
         ]);
+
         $data = [
             'name' => $request->name,
-            'description' => $request->description,
             'price' => $request->price,
             'type' => $request->type
         ];
-        $imageName = $product->image;
+
+        $imageName = $extra->image;
         if ($request->hasFile('image')) {
             $image = $request->file(key: 'image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $request->file('image')->storeAs('images', $imageName);
-            if ($product->image && Storage::exists('images/' . $product->image)) {
-                Storage::delete('images/' . $product->image);
+            if ($extra->image && Storage::exists('images/' . $extra->image)) {
+                Storage::delete('images/' . $extra->image);
             }
         }
         $data['image'] = $imageName;
-        $product->update($data);
-        return redirect()->route('products.index')->with('message', 'Product Updated Successfully');
+        $extra->update($data);
+
+        return redirect()->route('extras.index', ['type' => $data['type']])->with('message', 'extra Updated Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Extra $extra)
     {
-        if ($product->image && Storage::exists(storage_path('images/' . $product->image))) {
-            Storage::delete(storage_path('images/' . $product->image));
+        $type = $extra->type;
+        if ($extra->image && Storage::exists(storage_path('images/' . $extra->image))) {
+            Storage::delete(storage_path('images/' . $extra->image));
         }
-        $product->delete();
-        return redirect()->route('products.index')->with('message', 'Product Deleted Successfully');
+        $extra->delete();
+        return redirect()->route('extras.index', ['type' => $type])->with('message', 'Extra Deleted Successfully');
+    }
+
+
+    public function getByType(Request $request)
+    {
+        $extras = Extra::query()->where('type', $request->type)->get();
+        return response()->json(['extras' => $extras]);
     }
 }

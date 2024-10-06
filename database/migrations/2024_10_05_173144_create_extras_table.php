@@ -18,8 +18,7 @@ return new class extends Migration
             $table->string('name', 50);
             $table->float('price')->default(0);
             $table->string('image')->nullable();
-            $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
+            $table->string('type', 100);
             $table->timestamps();
         });
     }
