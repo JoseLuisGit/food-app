@@ -1,0 +1,33 @@
+name: Docker Build and Push
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  DEPLOYMENT_CONTAINER_NAME: ${{ vars.DEPLOYMENT_CONTAINER_NAME }}
+  DEPLOYMENT_IMAGE_TAG: ${{ vars.DEPLOYMENT_IMAGE_TAG }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Docker Login
+        run: |
+          docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${DOCKER_USER}/${DEPLOYMENT_CONTAINER_NAME}:${DEPLOYMENT_IMAGE_TAG} .
+
+      - name: Push Docker image
+        run: |
+          docker push ${DOCKER_USER}/${DEPLOYMENT_CONTAINER_NAME}:${DEPLOYMENT_IMAGE_TAG}
