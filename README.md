@@ -17,3 +17,5 @@ Puedes instalar la aplicacion en tu computadora local siguiendo los siguientes p
 4. Ejecuta el siguiente comando para instalar los dependencias: `npm install`
 5. Ejecuta el siguiente comando para ejecutar el build de la aplicacion: `npm run dev`
 6. Ejecuta el siguiente comando para iniciar el servidor de desarrollo: `php artisan serve`
+
+Derechos
