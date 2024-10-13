@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -129,5 +132,31 @@ class ProductController extends Controller
         }
         $product->delete();
         return redirect()->route('products.index')->with('message', 'Product Deleted Successfully');
+    }
+
+    public function generatePDF(Request $request)
+    {
+        $request->validate([
+            'productId' => 'required|integer',
+            'details' => 'array'
+        ]);
+
+        $product = Product::find($request->productId);
+
+        if (!$product) {
+            exit(0);
+        }
+
+        $details = $request->details ?? [];
+        $dt = new DateTime("now", new DateTimeZone('America/La_Paz'));
+
+        $data = [
+            'product' => $product,
+            'date' => $dt->format('d/m/Y - H:i:s'),
+            'details' => $details
+        ];
+
+        $pdf = PDF::loadView('product', $data);
+        return $pdf->stream(uniqid() . ".pdf");
     }
 }

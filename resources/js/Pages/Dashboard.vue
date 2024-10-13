@@ -4,12 +4,13 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import DialogModal from "@/Components/DialogModal.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+import PrimaryLink from "@/Components/PrimaryLink.vue";
 import { ref } from "vue";
 import TextInput from "../Components/TextInput.vue";
 import axios from "axios";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
-import DangerButton from "../Components/DangerButton.vue";
 
 const props = defineProps({
     products: Object,
@@ -57,6 +58,7 @@ const getExtrasByType = (type) => {
         extras.value = response.data.extras;
     });
 };
+
 </script>
 
 <template>
@@ -192,6 +194,11 @@ const getExtrasByType = (type) => {
                                 }}
                                 Bs.
                             </h2>
+                        </div>
+                        <div class="px-6 pt-4 pb-2">
+                            <PrimaryLink :href="route('generate-pdf', {productId: currentProduct.product_id, details: selectedExtras})" target="_blank">
+                                Imprimir
+                            </PrimaryLink>
                         </div>
                     </div>
                 </div>

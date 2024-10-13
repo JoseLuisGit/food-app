@@ -59,6 +59,7 @@ Route::middleware([
         return $response;
     })->name('file-image');
     Route::get('/extras-type', [ExtraController::class, 'getByType'])->name('extras.type');
+    Route::get('/generate-pdf', [ProductController::class, 'generatePDF'])->name('generate-pdf');
 });
 
 
